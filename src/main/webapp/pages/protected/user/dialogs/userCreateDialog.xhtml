@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<p:dialog widgetVar="userCreateDialogWidget"
+		id="userCreateDialogId" height="260" width="500" modal="true"
+		closable="true" draggable="false" resizable="false">
+		<h:form id="userCreateDialogForm" prependId="false">
+			<p:panelGrid columns="2">
+				<p:outputLabel value="* Username" />
+				<p:inputText value="#{userManagementController.user.username}" required="true" label="Username" >
+					
+				</p:inputText>
+				
+				<p:outputLabel value="* Password" />
+				<p:password value="#{userManagementController.user.password}" required="true" label="Password" >
+				</p:password>
+				
+				<p:outputLabel value="* Role" />
+				<p:selectOneMenu value="#{userManagementController.user.role}" required="true" label="Role">
+					<f:selectItems value="#{userManagementController.roleValues}" />
+				</p:selectOneMenu>
+				
+				<p:commandButton value="Create" icon="ui-icon-plus"
+					action="#{userManagementController.createUser()}"
+					update=":messageGrowl :usersForm:usersTable"
+					oncomplete="closeDialogIfSucess(xhr, status, args, userCreateDialogWidget, 'userCreateDialogId')" />
+				<p:commandButton value="Cancel" icon="ui-icon-cancel" actionListener="#{userManagementController.resetUser()}"
+					onclick="userCreateDialogWidget.hide();" type="button" />
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+</h:body>
+</html>

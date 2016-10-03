@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<p:dialog widgetVar="groupAddPhoneDialogWidget" id="groupAddPhoneDialogId" height="150" width="500" modal="true" closable="true" draggable="false"
+		resizable="false">
+		<h:form id="groupAddPhoneDialogForm" prependId="false">
+			Add the selected Phone to: <h:outputText value="#{groupController.groupWithPhones.groupName}" />
+			<br />
+			<p:autoComplete value="#{groupController.phone}" completeMethod="#{groupController.complete}" var="phone" label="Phone" itemLabel="#{phone.phoneNumber}" 
+					itemValue="#{phone}" converter="phoneConverter" dropdown="true" forceSelection="true" required="true" />
+			<br />
+			<br />
+			
+			<p:commandButton value="Add" icon="ui-icon-plus" action="#{groupController.addPhoneToGroup()}" update=":messageGrowl :groupsForm:groupsTable"
+				oncomplete="closeDialogIfSucess(xhr, status, args, groupAddPhoneDialogWidget, 'groupAddPhoneDialogId')" />
+			<p:commandButton value="Cancel" icon="ui-icon-cancel" onclick="groupAddPhoneDialogWidget.hide();" type="button" />
+		</h:form>
+	</p:dialog>
+</h:body>
+</html>

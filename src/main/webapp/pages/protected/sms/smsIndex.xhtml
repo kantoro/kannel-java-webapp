@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/pages/protected/templates/master.xhtml">
+		<ui:define name="divMain">
+			<h2>Send SMS Module</h2>
+			<div style="width: 100%;">
+				<div id="left-col" style="width: 80%">
+				<p:tabView>
+					<p:tab title="Manually">
+						<h:form>
+						    <h:panelGrid columns="4" cellpadding="5">
+						        <h:outputLabel for="phoneNumber" value="Phone Number:" style="font-weight:bold" />
+						        <p:inputText id="phoneNumber" value="#{smsController.phoneNumber}" required="true" requiredMessage="Phone Number Required" />
+						        <p:commandButton id="addPhone" value="Add" update=":phonesForm:phonesTable" icon="ui-icon-plus" action="#{smsController.addPhone()}" />
+						        <h:message for="addPhone" />
+						    </h:panelGrid>
+						</h:form>
+			        </p:tab>
+			        <p:tab title="Numbers from DB">
+			        	<h:form>
+			        		<h:panelGrid columns="4" cellpadding="5">
+			        			<h:outputLabel for="phoneNumberFromDB" value="Phone Number:" style="font-weight:bold" />
+					            <p:autoComplete id="phoneNumberFromDB" value="#{smsController.phone}" completeMethod="#{smsController.complete}" var="phone" label="Phone" itemLabel="#{phone.phoneNumber}" 
+									itemValue="#{phone}" converter="phoneConverter" dropdown="true" forceSelection="true" required="true" />
+								<br />
+								<br />
+								<p:commandButton id="addPhoneFromDB" value="Add" icon="ui-icon-plus" action="#{smsController.addPhoneFromDB()}" update=":phonesForm:phonesTable"/>
+								<h:message for="addPhoneFromDB" />
+							</h:panelGrid>
+						</h:form>
+			        </p:tab>
+			        <p:tab title="Group from DB">
+			            <h:form>
+			            	<h:panelGrid columns="4" cellpadding="5">
+			            		<h:outputLabel for="groupFromDB" value="Group:" style="font-weight:bold" />
+					            <p:autoComplete id="groupFromDB" value="#{smsController.group}" completeMethod="#{smsController.completeGroup}" var="group" label="Group" itemLabel="#{group.groupName}" 
+									itemValue="#{group}" converter="groupConverter" dropdown="true" forceSelection="true" required="true" />
+								<br />
+								<br />
+								<p:commandButton id="addGroup" value="Add" icon="ui-icon-plus" action="#{smsController.addPhonesFromGroup()}" update=":phonesForm:phonesTable"/>
+								<h:message for="addGroup" />
+							</h:panelGrid>
+						</h:form>
+			        </p:tab>
+			    </p:tabView>
+				</div>
+				<div id="right-col">
+					<h:form id="phonesForm">
+						<p:dataTable id="phonesTable" value="#{smsController.phones}"
+							var="phone" emptyMessage="No records" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Phone Number" />
+								</f:facet>
+								<h:outputText value="#{phone.phoneNumber}" />
+							</p:column>
+							<p:column>
+								<p:commandButton value="Remove" icon="ui-icon-trash" action="#{smsController.removePhone()}" update=":phonesForm:phonesTable">
+									<f:setPropertyActionListener target="#{smsController.phone}" value="#{phone}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<br />
+						<h3>SMS Content</h3>
+    					<p:inputTextarea id="smsContent" value="#{smsController.smsContent}" />
+						<p:commandButton value="Send SMS" icon="ui-icon-check" action="#{smsController.sendSMS()}" />
+					</h:form>
+				</div>
+			</div>
+			<div style="clear:both"></div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

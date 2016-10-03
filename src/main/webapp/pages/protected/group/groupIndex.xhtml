@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/pages/protected/templates/master.xhtml">
+		<ui:define name="divMain">
+			<h:form id="groupsForm">
+				<p:dataTable id="groupsTable" value="#{groupController.userGroups}" var="group" emptyMessage="No records" paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Group Name:" />
+						</f:facet>
+						<h:outputText value="#{group.groupName}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Created Date:" />
+						</f:facet>
+						<h:outputText value="#{group.dateCreated}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+6" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column>
+						<p:commandButton value="Details" icon="ui-icon-bullet" onclick="groupDetailDialogWidget.show();" update=":groupDetailDialogForm" >
+							<f:setPropertyActionListener target="#{groupController.groupWithPhonesForDetail}" value="#{group}" />
+						</p:commandButton>
+						<p:spacer width="10px" />
+						<p:commandButton value="Update" icon="ui-icon-pencil" update=":groupUpdateDialogForm" onclick="groupUpdateDialogWidget.show();" >
+							<f:setPropertyActionListener target="#{groupController.group}" value="#{group}" />
+						</p:commandButton>
+						<p:spacer width="10px" />
+						<p:commandButton value="Delete" icon="ui-icon-trash" update=":groupDeleteDialogForm" onclick="groupDeleteDialogWidget.show();" >
+							<f:setPropertyActionListener target="#{groupController.group}" value="#{group}" />
+						</p:commandButton>
+						<p:spacer width="10px" />
+						<p:commandButton value="Edit group phones" icon="ui-icon-contact" ajax="false"
+							action="#{groupController.editGroupPhones()}">
+								<f:setPropertyActionListener target="#{groupController.group}" value="#{group}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Create Group" icon="ui-icon-plus" update=":groupCreateDialogForm"
+					actionListener="#{groupController.resetGroup()}" onclick="groupCreateDialogWidget.show();" />
+			</h:form>
+
+			<ui:include src="/pages/protected/group/dialogs/groupCreateDialog.xhtml" />
+			<ui:include src="/pages/protected/group/dialogs/groupUpdateDialog.xhtml" />
+			<ui:include src="/pages/protected/group/dialogs/groupDeleteDialog.xhtml" />
+			<ui:include src="/pages/protected/group/dialogs/groupDetailDialog.xhtml" />
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

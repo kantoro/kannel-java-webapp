@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<p:dialog widgetVar="groupDetailDialogWidget" id="groupDetailDialogId" width="500" modal="true" closable="false"
+		draggable="false" resizable="false">
+		<h:form id="groupDetailDialogForm" prependId="false">
+			<h:panelGrid columns="2">
+				<h:outputText value="Group Name:" />
+				<h:outputText value="#{groupController.groupWithPhonesForDetail.groupName}" />
+				<h:outputText value="Group Description:" />
+				<h:outputText value="#{groupController.groupWithPhonesForDetail.description}" />
+				<h:outputText value="Group created date:" />
+				<h:outputText value="#{groupController.groupWithPhonesForDetail.dateCreated}">
+					<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+6" />
+				</h:outputText>
+			</h:panelGrid>
+			
+			<p:dataTable value="#{groupController.groupWithPhonesForDetail.phones.toArray()}" var="phone">
+				<f:facet name="header">Phones</f:facet>
+				<p:column>
+					<h:outputText value="#{phone.phoneNumber}" />
+				</p:column>
+			</p:dataTable>
+			
+			<p:commandButton value="OK" icon="ui-icon-arrow-1-w"
+				actionListener="#{groupController.resetGroupWithPhonesForDetail()}" onclick="groupDetailDialogWidget.hide();" />
+		</h:form>
+	</p:dialog>
+</h:body>
+</html>
